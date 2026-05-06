@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" role="img" aria-labelledby="title desc">
+  <title id="title">Anti Santa Club sigil</title>
+  <desc id="desc">Large original Anti Santa Club sigil for background use.</desc>
+  <rect width="900" height="900" fill="#050505"/>
+  <circle cx="450" cy="450" r="370" fill="none" stroke="#f8f7ed" stroke-width="20"/>
+  <circle cx="450" cy="450" r="282" fill="none" stroke="#ff1d25" stroke-width="34" stroke-dasharray="34 28"/>
+  <path d="M450 108 735 770H165L450 108Z" fill="#f8f7ed"/>
+  <path d="M450 212 635 706H265l185-494Z" fill="#050505"/>
+  <path d="M186 606h528v82H186z" fill="#ff1d25"/>
+  <path d="M205 740 733 174" stroke="#d8ff00" stroke-width="58"/>
+  <path d="M168 168 734 734" stroke="#18e7ff" stroke-width="20" stroke-dasharray="24 28"/>
+</svg>

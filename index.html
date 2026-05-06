@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Anti Santa Club: underground house, tech house and disco pressure from Rome."
+    />
+    <meta property="og:title" content="Anti Santa Club" />
+    <meta
+      property="og:description"
+      content="No chimney. No velvet rope. House, tech house and disco pressure."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/brand/poster-snowburn.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Anti Santa Club</title>
+  </head>
+  <body>
+    <canvas id="noise-field" aria-hidden="true"></canvas>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <header class="site-header" data-reveal>
+      <a class="brand-link" href="#top" aria-label="Anti Santa Club home">
+        <img src="/brand/anti-santa-logo.svg" alt="" />
+        <span>Anti Santa Club</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#manifesto">Manifesto</a>
+        <a href="#flyers">Flyers</a>
+        <a href="#archive">Archive</a>
+        <a href="#contact">Contact</a>
+        <a
+          class="nav-pill"
+          href="https://www.instagram.com/antisantaclub/"
+          rel="noreferrer"
+          target="_blank"
+          aria-label="Open Anti Santa Club on Instagram"
+        >
+          IG
+        </a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-backdrop" aria-hidden="true">
+          <img class="hero-sigil" src="/brand/sigil.svg" alt="" />
+          <div class="warning-grid"></div>
+        </div>
+
+        <div class="hero-copy" data-reveal>
+          <p class="kicker">Roma signal / house / tech house / disco</p>
+          <h1 id="hero-title">ANTI<br />SANTA<br />CLUB</h1>
+          <p class="hero-lede">
+            A club night built like a short circuit: dirty glamour, fast flyers,
+            redline sound and zero festive manners.
+          </p>
+          <div class="hero-actions" aria-label="Main actions">
+            <a
+              class="button button-primary"
+              href="https://www.instagram.com/antisantaclub/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Join the signal
+            </a>
+            <button class="button button-secondary" type="button" data-copy-invite>
+              Copy invite
+            </button>
+            <button
+              class="button button-ghost"
+              type="button"
+              aria-pressed="false"
+              data-chaos-toggle
+            >
+              Mode X
+            </button>
+          </div>
+        </div>
+
+        <aside class="signal-board" aria-label="Current Anti Santa Club signal" data-reveal>
+          <p>Next ritual</p>
+          <strong>TBA</strong>
+          <span>DM for drops, tables and wrong turns.</span>
+        </aside>
+      </section>
+
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker-track">
+          <span>No chimney</span>
+          <span>No velvet rope</span>
+          <span>Only pressure</span>
+          <span>House discipline</span>
+          <span>Disco damage</span>
+          <span>Tech house voltage</span>
+          <span>No chimney</span>
+          <span>No velvet rope</span>
+          <span>Only pressure</span>
+          <span>House discipline</span>
+          <span>Disco damage</span>
+          <span>Tech house voltage</span>
+        </div>
+      </div>
+
+      <section id="manifesto" class="manifesto section-band">
+        <div class="section-heading" data-reveal>
+          <p class="kicker">Club code</p>
+          <h2>Not a Christmas joke. A dancefloor problem.</h2>
+        </div>
+        <div class="manifesto-grid">
+          <article data-reveal>
+            <span>01</span>
+            <h3>Pressure before polish</h3>
+            <p>
+              The room comes first: warm bodies, hard drums, quick transitions,
+              useful darkness.
+            </p>
+          </article>
+          <article data-reveal>
+            <span>02</span>
+            <h3>Flyers as weapons</h3>
+            <p>
+              Every drop should look illegal before the bassline even starts.
+              Big contrast, sharp copy, no polite decoration.
+            </p>
+          </article>
+          <article data-reveal>
+            <span>03</span>
+            <h3>Community without velvet</h3>
+            <p>
+              No fake exclusivity. The door is a filter for energy, not a shrine
+              for status.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="flyers" class="flyer-lab section-band">
+        <div class="section-heading" data-reveal>
+          <p class="kicker">Graphic system</p>
+          <h2>Flyer machine, built into the site.</h2>
+        </div>
+
+        <div class="flyer-stage">
+          <div class="poster-stack" data-reveal>
+            <img src="/brand/poster-blackout.svg" alt="Anti Santa Club blackout poster" />
+            <img src="/brand/poster-snowburn.svg" alt="Anti Santa Club snowburn poster" />
+            <img src="/brand/poster-redline.svg" alt="Anti Santa Club redline poster" />
+          </div>
+
+          <article class="live-poster" data-live-poster data-reveal aria-live="polite">
+            <p data-poster-meta>ROME / TBA / 23:59</p>
+            <h3 data-poster-title>NO SANTA</h3>
+            <strong data-poster-subtitle>ONLY PRESSURE</strong>
+            <span data-poster-footer>HOUSE / TECH HOUSE / DISCO</span>
+          </article>
+
+          <div class="poster-controls" data-reveal aria-label="Flyer controls">
+            <button class="button button-primary" type="button" data-poster-random>
+              New flyer
+            </button>
+            <button class="button button-secondary" type="button" data-poster-invert>
+              Invert
+            </button>
+            <button class="button button-ghost" type="button" data-freeze-canvas>
+              Freeze noise
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="archive" class="archive section-band">
+        <div class="section-heading" data-reveal>
+          <p class="kicker">Documented traces</p>
+          <h2>Past sightings, no fake future dates.</h2>
+        </div>
+
+        <div class="event-grid">
+          <article class="event-card" data-tilt data-reveal>
+            <p class="event-date">10 Oct 2025 / 22:00-03:00</p>
+            <h3>Anti Santa Santa Club</h3>
+            <p>Alcazar, Rome. Live show pressure with house and disco tags.</p>
+            <a href="https://xceed.me/en/roma/event/anti-santa-santa-club-1--204344" target="_blank" rel="noreferrer">
+              Xceed trace
+            </a>
+          </article>
+          <article class="event-card" data-tilt data-reveal>
+            <p class="event-date">31 Jan 2026 / 23:00-04:00</p>
+            <h3>Groovin Circle x Dv Society</h3>
+            <p>Circoletto Forte Trionfale, Rome. Diego on the lineup, house and tech house.</p>
+            <a href="https://nl.ra.co/events/2353066" target="_blank" rel="noreferrer">
+              RA trace
+            </a>
+          </article>
+          <article class="event-card" data-tilt data-reveal>
+            <p class="event-date">21 Feb 2026 / 15:00-20:00</p>
+            <h3>Apres Ski x Anti Santa Club</h3>
+            <p>Campo Felice signal with Fede Cambi and Diego, house and tech house.</p>
+            <a href="https://de.ra.co/events/2374030" target="_blank" rel="noreferrer">
+              RA trace
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section id="contact" class="contact section-band">
+        <div class="contact-copy" data-reveal>
+          <p class="kicker">Bookings / collabs / drops</p>
+          <h2>Send the signal before it becomes a public problem.</h2>
+          <p>
+            For guest lists, venue links, collabs and last-minute flyer chaos,
+            keep the thread on Instagram.
+          </p>
+        </div>
+        <div class="contact-actions" data-reveal>
+          <a
+            class="button button-primary"
+            href="https://www.instagram.com/antisantaclub/"
+            rel="noreferrer"
+            target="_blank"
+          >
+            DM Anti Santa Club
+          </a>
+          <button class="button button-secondary" type="button" data-copy-handle>
+            Copy @antisantaclub
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <img src="/brand/anti-santa-logo.svg" alt="" />
+      <span>Anti Santa Club</span>
+      <span>Rome underground signal</span>
+    </footer>
+
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
