@@ -24,10 +24,15 @@
 }
 
 html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
 body {
+  width: 100%;
+  max-width: 100%;
   min-width: 320px;
   margin: 0;
   overflow-x: hidden;
@@ -36,6 +41,14 @@ body {
     linear-gradient(90deg, rgba(24, 231, 255, 0.1) 1px, transparent 1px),
     #050505;
   background-size: 48px 48px;
+}
+
+@supports (overflow: clip) {
+  html,
+  body,
+  main {
+    overflow-x: clip;
+  }
 }
 
 a {
@@ -209,6 +222,9 @@ img {
 main {
   position: relative;
   z-index: 5;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 .hero-shell {
@@ -216,6 +232,7 @@ main {
   min-height: 100svh;
   padding: 7rem 1rem 1rem;
   overflow: hidden;
+  contain: paint;
   isolation: isolate;
 }
 
@@ -401,10 +418,13 @@ main {
 }
 
 .ticker {
+  width: 100%;
+  max-width: 100vw;
   overflow: hidden;
   border-block: 1px solid var(--paper);
   background: var(--paper);
   color: var(--ink);
+  contain: layout paint;
 }
 
 .ticker div {
@@ -551,6 +571,7 @@ main {
 
 .poster-section {
   min-height: 100svh;
+  overflow-x: hidden;
   background:
     linear-gradient(180deg, rgba(255, 24, 53, 0.1), rgba(24, 231, 255, 0.08)),
     #080808;
@@ -566,6 +587,8 @@ main {
 .poster-deck {
   position: relative;
   height: clamp(32rem, 65vw, 44rem);
+  overflow: hidden;
+  contain: paint;
 }
 
 .poster-card {
