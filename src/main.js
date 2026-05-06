@@ -10,6 +10,10 @@ const blastLayer = document.querySelector('[data-blast-layer]');
 const toast = document.querySelector('[data-toast]');
 const chaosToggle = document.querySelector('[data-chaos-toggle]');
 const blastButton = document.querySelector('[data-blast-button]');
+const feedTrack = document.querySelector('[data-feed-track]');
+const feedPrev = document.querySelector('[data-feed-prev]');
+const feedNext = document.querySelector('[data-feed-next]');
+const brandLogoSrc = document.querySelector('.brand img')?.getAttribute('src') || 'brand/instagram-profile.jpg';
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const coarsePointer = window.matchMedia('(pointer: coarse)');
 
@@ -105,11 +109,11 @@ function drawTrail() {
     trailCtx.lineCap = 'round';
     trailCtx.lineJoin = 'round';
 
-    const layers = coarsePointer.matches ? 3 : 4;
+    const layers = coarsePointer.matches ? 2 : 3;
     for (let layer = 0; layer < layers; layer += 1) {
       trailCtx.beginPath();
       trail.forEach((point, index) => {
-        const wobble = Math.sin(index * 0.8 + frame * 0.1) * (chaos ? 12 : 5);
+        const wobble = Math.sin(index * 0.8 + frame * 0.1) * (chaos ? 7 : 3);
         if (index === 0) {
           trailCtx.moveTo(point.x + wobble, point.y);
         } else {
@@ -122,10 +126,10 @@ function drawTrail() {
           );
         }
       });
-      trailCtx.globalAlpha = layer === 0 ? 0.92 : 0.34;
+      trailCtx.globalAlpha = layer === 0 ? 0.82 : 0.24;
       trailCtx.strokeStyle = ['#d8ff00', '#18e7ff', '#ff1d25', '#f8f7ed'][layer];
-      trailCtx.lineWidth = (chaos ? 42 : 30) - layer * 7;
-      trailCtx.shadowBlur = 34;
+      trailCtx.lineWidth = (chaos ? 20 : 12) - layer * 4;
+      trailCtx.shadowBlur = 18;
       trailCtx.shadowColor = trailCtx.strokeStyle;
       trailCtx.stroke();
     }
@@ -133,36 +137,36 @@ function drawTrail() {
     const head = trail[trail.length - 1];
     trailCtx.globalAlpha = 1;
     trailCtx.fillStyle = '#f8f7ed';
-    trailCtx.shadowBlur = 30;
+    trailCtx.shadowBlur = 16;
     trailCtx.shadowColor = '#d8ff00';
     trailCtx.beginPath();
-    trailCtx.arc(head.x, head.y, chaos ? 9 : 6, 0, Math.PI * 2);
+    trailCtx.arc(head.x, head.y, chaos ? 6 : 4, 0, Math.PI * 2);
     trailCtx.fill();
     trailCtx.restore();
   }
 
   sparks.forEach((spark) => {
     const progress = Math.min((now - spark.time) / 820, 1);
-    const radius = 18 + progress * (spark.touch ? 160 : 120);
+    const radius = 10 + progress * (spark.touch ? 82 : 62);
     trailCtx.save();
     trailCtx.globalAlpha = 1 - progress;
     trailCtx.strokeStyle = spark.touch ? '#d8ff00' : '#18e7ff';
-    trailCtx.lineWidth = 4;
-    trailCtx.shadowBlur = 18;
+    trailCtx.lineWidth = 2;
+    trailCtx.shadowBlur = 10;
     trailCtx.shadowColor = trailCtx.strokeStyle;
     trailCtx.beginPath();
     trailCtx.arc(spark.x, spark.y, radius, 0, Math.PI * 2);
     trailCtx.stroke();
 
     trailCtx.strokeStyle = '#ff1d25';
-    const spokes = spark.touch || chaos ? 16 : 12;
+    const spokes = spark.touch || chaos ? 8 : 6;
     for (let i = 0; i < spokes; i += 1) {
       const angle = (i / spokes) * Math.PI * 2 + progress;
       trailCtx.beginPath();
       trailCtx.moveTo(spark.x + Math.cos(angle) * 10, spark.y + Math.sin(angle) * 10);
       trailCtx.lineTo(
-        spark.x + Math.cos(angle) * (36 + progress * 88),
-        spark.y + Math.sin(angle) * (36 + progress * 88),
+        spark.x + Math.cos(angle) * (18 + progress * 42),
+        spark.y + Math.sin(angle) * (18 + progress * 42),
       );
       trailCtx.stroke();
     }
@@ -244,14 +248,30 @@ function spawnBlastLabels(x, y, count) {
   }
 }
 
+function dropLogo(x, y) {
+  if (!blastLayer || prefersReducedMotion.matches) return;
+
+  const logo = document.createElement('img');
+  logo.className = 'logo-drop';
+  logo.src = brandLogoSrc;
+  logo.alt = '';
+  logo.style.left = `${x}px`;
+  logo.style.top = `${y}px`;
+  logo.style.setProperty('--fall', `${76 + Math.random() * 58}px`);
+  logo.style.setProperty('--drift', `${Math.random() * 44 - 22}px`);
+  logo.style.setProperty('--rot', `${Math.random() * 90 - 45}deg`);
+  blastLayer.append(logo);
+  window.setTimeout(() => logo.remove(), 720);
+}
+
 function blastAt(x, y, touch = false) {
   const now = performance.now();
-  const syntheticPoints = touch ? 12 : 7;
+  const syntheticPoints = touch ? 6 : 4;
 
   for (let index = syntheticPoints; index >= 0; index -= 1) {
     trail.push({
       x: x - index * (touch ? 11 : 8) + Math.sin(index * 1.8) * 18,
-      y: y + Math.cos(index * 1.3) * (touch ? 26 : 16),
+      y: y + Math.cos(index * 1.3) * (touch ? 14 : 10),
       time: now - index * 22,
     });
   }
@@ -259,13 +279,24 @@ function blastAt(x, y, touch = false) {
   while (trail.length > (coarsePointer.matches ? 34 : 48)) trail.shift();
 
   sparks.push({ x, y, time: now, touch });
-  if (chaos || touch) {
+  if (chaos) {
     sparks.push({ x: x - 26, y: y + 18, time: now + 32, touch });
     sparks.push({ x: x + 30, y: y - 12, time: now + 54, touch });
   }
 
-  spawnBlastLabels(x, y, coarsePointer.matches ? 4 : 7);
+  spawnBlastLabels(x, y, coarsePointer.matches ? 2 : 3);
   ensureTrailLoop();
+}
+
+function scrollFeed(direction) {
+  if (!feedTrack) return;
+  const card = feedTrack.querySelector('.feed-card');
+  const gap = Number.parseFloat(getComputedStyle(feedTrack).columnGap) || 16;
+  const step = card ? card.getBoundingClientRect().width + gap : feedTrack.clientWidth * 0.86;
+  feedTrack.scrollBy({
+    left: direction * step,
+    behavior: prefersReducedMotion.matches ? 'auto' : 'smooth',
+  });
 }
 
 function wireInteractions() {
@@ -280,7 +311,7 @@ function wireInteractions() {
   window.addEventListener('pointermove', pushTrail, { passive: true });
   window.addEventListener('pointerdown', (event) => {
     pushTrail(event);
-    blastAt(event.clientX, event.clientY, event.pointerType === 'touch');
+    dropLogo(event.clientX, event.clientY);
     root.classList.add('is-pressing');
   }, { passive: true });
   window.addEventListener('pointerup', () => root.classList.remove('is-pressing'));
@@ -313,6 +344,9 @@ function wireInteractions() {
     dot.addEventListener('click', () => setSlide(Number(dot.dataset.dot)));
   });
 
+  feedPrev?.addEventListener('click', () => scrollFeed(-1));
+  feedNext?.addEventListener('click', () => scrollFeed(1));
+
   const carousel = document.querySelector('[data-carousel]');
   carousel.addEventListener('pointerdown', (event) => {
     dragStart = event.clientX;
@@ -328,7 +362,7 @@ function wireInteractions() {
     dragStart = null;
   });
 
-  document.querySelectorAll('a, button, .event-ticket, .poster-card').forEach((item) => {
+  document.querySelectorAll('a, button, .event-ticket, .poster-card, .feed-card').forEach((item) => {
     item.addEventListener('pointerenter', () => root.classList.add('cursor-hot'));
     item.addEventListener('pointerleave', () => root.classList.remove('cursor-hot'));
   });
