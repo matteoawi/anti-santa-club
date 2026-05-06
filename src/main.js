@@ -13,6 +13,11 @@ let mouseY = 0.5;
 let chaos = false;
 let frozen = false;
 let frame = 0;
+let pointerActive = false;
+
+const trail = [];
+const splashes = [];
+const cursorOrbit = document.querySelector('[data-cursor-orbit]');
 
 const posters = [
   {
@@ -105,7 +110,78 @@ function drawNoise() {
   ctx.fillRect(0, barY, width, chaos ? 10 : 4);
   ctx.restore();
 
+  drawPointerTrace();
+
   requestAnimationFrame(drawNoise);
+}
+
+function drawPointerTrace() {
+  const now = performance.now();
+  while (trail.length && now - trail[0].time > 760) {
+    trail.shift();
+  }
+
+  while (splashes.length && now - splashes[0].time > 620) {
+    splashes.shift();
+  }
+
+  if (trail.length > 1) {
+    ctx.save();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    for (let layer = 0; layer < 3; layer += 1) {
+      ctx.beginPath();
+      trail.forEach((point, index) => {
+        const jitter = chaos ? Math.sin(index + frame * 0.18) * 8 : 0;
+        if (index === 0) {
+          ctx.moveTo(point.x + jitter, point.y);
+        } else {
+          const previous = trail[index - 1];
+          const midpointX = (previous.x + point.x) / 2 + jitter;
+          const midpointY = (previous.y + point.y) / 2;
+          ctx.quadraticCurveTo(previous.x + jitter, previous.y, midpointX, midpointY);
+        }
+      });
+
+      const age = Math.min((now - trail[0].time) / 760, 1);
+      ctx.globalAlpha = (1 - age) * (layer === 0 ? 0.34 : 0.18);
+      ctx.strokeStyle = layer === 0 ? '#d8ff00' : layer === 1 ? '#18e7ff' : '#ff1d25';
+      ctx.lineWidth = chaos ? 18 - layer * 5 : 12 - layer * 3;
+      ctx.stroke();
+    }
+
+    const latest = trail[trail.length - 1];
+    ctx.globalAlpha = pointerActive ? 0.85 : 0.35;
+    ctx.fillStyle = chaos ? '#ff1d25' : '#d8ff00';
+    ctx.beginPath();
+    ctx.arc(latest.x, latest.y, pointerActive ? 7 : 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  splashes.forEach((splash) => {
+    const progress = Math.min((now - splash.time) / 620, 1);
+    ctx.save();
+    ctx.globalAlpha = 1 - progress;
+    ctx.strokeStyle = splash.kind === 'touch' ? '#d8ff00' : '#18e7ff';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(splash.x, splash.y, 18 + progress * 74, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.strokeStyle = '#ff1d25';
+    for (let i = 0; i < 8; i += 1) {
+      const angle = (Math.PI * 2 * i) / 8 + progress * 0.8;
+      const inner = 18 + progress * 28;
+      const outer = 32 + progress * 88;
+      ctx.beginPath();
+      ctx.moveTo(splash.x + Math.cos(angle) * inner, splash.y + Math.sin(angle) * inner);
+      ctx.lineTo(splash.x + Math.cos(angle) * outer, splash.y + Math.sin(angle) * outer);
+      ctx.stroke();
+    }
+    ctx.restore();
+  });
 }
 
 function setPoster(poster) {
@@ -188,10 +264,56 @@ function setupTilt() {
 
 window.addEventListener('resize', resizeCanvas);
 window.addEventListener('pointermove', (event) => {
+  root.classList.add('cursor-ready');
   mouseX = event.clientX / Math.max(window.innerWidth, 1);
   mouseY = event.clientY / Math.max(window.innerHeight, 1);
   root.style.setProperty('--mouse-x', mouseX.toFixed(3));
   root.style.setProperty('--mouse-y', mouseY.toFixed(3));
+
+  if (!prefersReducedMotion.matches) {
+    trail.push({
+      x: event.clientX,
+      y: event.clientY,
+      time: performance.now(),
+    });
+
+    if (trail.length > 32) {
+      trail.shift();
+    }
+  }
+
+  if (cursorOrbit) {
+    cursorOrbit.style.setProperty('--cursor-x', `${event.clientX}px`);
+    cursorOrbit.style.setProperty('--cursor-y', `${event.clientY}px`);
+  }
+});
+
+window.addEventListener('pointerdown', (event) => {
+  pointerActive = true;
+  if (!prefersReducedMotion.matches) {
+    splashes.push({
+      x: event.clientX,
+      y: event.clientY,
+      time: performance.now(),
+      kind: event.pointerType,
+    });
+  }
+  root.classList.add('is-pressing');
+});
+
+window.addEventListener('pointerup', () => {
+  pointerActive = false;
+  root.classList.remove('is-pressing');
+});
+
+window.addEventListener('pointercancel', () => {
+  pointerActive = false;
+  root.classList.remove('is-pressing');
+});
+
+document.querySelectorAll('a, button, [data-tilt]').forEach((item) => {
+  item.addEventListener('pointerenter', () => root.classList.add('cursor-hot'));
+  item.addEventListener('pointerleave', () => root.classList.remove('cursor-hot'));
 });
 
 document.querySelector('[data-chaos-toggle]').addEventListener('click', (event) => {
