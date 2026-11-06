@@ -1511,3 +1511,5 @@ main {
     display: none;
   }
 }
+
+.site-credit{position:relative;z-index:2;text-align:center;padding:28px 20px;font-size:14px;color:var(--white,#f8f7ed)}.site-credit a{color:inherit;text-decoration:underline;text-underline-offset:4px}
